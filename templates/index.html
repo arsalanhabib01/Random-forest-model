@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Predicting from the Random forest classification model</title>
+  </head>
+  <body>
+    <h1>Predict</h1>
+    <form>
+      <button type="button" onclick="predict()">Predict</button>
+    </form>
+    <p id="prediction"></p>
+    <script>
+      function predict() {
+        // Command to run python -m http.server
+        // Define the input data as an array of random numbers
+        var input_data = {'data': []};
+        for (var i = 0; i < 69; i++) {
+          input_data.data.push(Math.random());
+        }
+
+        // Convert the dictionary to JSON format
+        var json_data = JSON.stringify(input_data);
+
+        // Set the content type header
+        var headers = {'Content-Type': 'application/json'};
+
+        // Send the POST request to the Flask endpoint
+        fetch('/predict', {
+          method: 'POST',
+          headers: headers,
+          body: json_data
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Display the prediction in the HTML page
+          document.getElementById("prediction").innerHTML = "Prediction: " + data.prediction + "<br>Date: " + data.date + "<br>Time: " + data.time;
+        })
+        .catch(error => console.error(error));
+      }
+    </script>
+ </body>
+</html>

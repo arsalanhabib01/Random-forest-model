@@ -1,0 +1,90 @@
+body {  
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f2f2f2; 
+  max-width: 100%;
+  max-height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.container {
+  text-align: center;
+  padding: 10px;
+}
+
+h1 {
+  font-size: 36px; 
+  font-weight: bold; 
+  color: gray; 
+}
+
+h2 {
+  position: relative;
+  font-size: 20px;
+  top: 30px;
+}
+
+.grid-container {
+  display: grid;
+  margin-top: 50px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.grid-item {
+  position: relative;
+  border: 1px solid lightgray;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  height: 91%;
+  background-color: rgb(228, 226, 226);
+}
+
+.excel-file {
+  position: relative;
+  align-items: flex-end;
+  cursor: pointer;
+}
+
+.excel-icon {
+  position: absolute;
+  font-size: 25px;
+  top: 20px;
+  right: 10px;
+  color:green;
+}
+
+.excel-file:hover .excel-text {
+  display: block;
+}
+
+.excel-text {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    max-width: 100%;
+ }
+  .grid-container {
+    margin-top: 20px;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(3, 1fr);
+ }
+  .grid-item {
+    height: 80%;
+ }
+}
