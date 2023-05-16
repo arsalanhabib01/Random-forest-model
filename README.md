@@ -41,9 +41,9 @@ This is a sample Dashboard application built using React.js for the front-end, M
 ## Prerequisites
 Before running the app, you will need to have the following software installed on your machine:
 
-. Node.js
-. NPM
-. MongoDB
+* Node.js
+* NPM
+* MongoDB
 
 ## Getting Started
 To get started with the app, follow these steps:
@@ -84,13 +84,16 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 
 ## Built With
-. React.js - A JavaScript library for building user interfaces
-. MongoDB - A cross-platform document-oriented database program
-. Express.js - A web application framework for Node.js
-. Cors - A middleware that allows Cross-Origin Resource Sharing (CORS)
-. Dotenv - A module that loads environment variables from a .env file
-. Chart.js - A JavaScript library for data visualization that works with React.js
-. Axios.js - A Promise-based HTTP client for the browser and Node.js
+* React.js - A JavaScript library for building user interfaces
+* MongoDB - A cross-platform document-oriented database program
+* Express.js - A web application framework for Node.js
+* Cors - A middleware that allows Cross-Origin Resource Sharing (CORS)
+* Dotenv - A module that loads environment variables from a .env file
+* Chart.js - A JavaScript library for data visualization that works with React.js
+* Axios.js - A Promise-based HTTP client for the browser and Node.js
+* XLSX - A library for reading, writing, and manipulating Excel files
+* @fortawesome/react-fontawesome - A React wrapper for the Font Awesome icon library
+* @fortawesome/free-solid-svg-icons - A library of scalable vector icons for React.js
 
 
 ## Dashboard and Charts
