@@ -29,7 +29,7 @@ A Locustfile test is defines three set of tasks in the class predictionuser that
 
 ### Run server before the running the locust file
 
-1. Create a __init__.py file of the project and add your MongoDB URI as MONGODB_URI=<your-mongodb-uri>
+1. Create a __init__.py file of the project and add your MongoDB URL as MongoClient=<your-mongodb-url>
 2. Run a script, ```$> python3 server.py```
 3. Then run this script parallel, ```$> locust -f locustfile.py --headless -u 1000 -r 100```
 
@@ -50,8 +50,8 @@ To get started with the app, follow these steps:
 
 1. Clone this repository to your local machine
 2. Navigate to the project directory in your terminal/command prompt
-3. Create a .env file in the `backend` directory of the project and add your MongoDB URI as MONGODB_URI=<your-mongodb-uri>
-4. Install the dependencies by running `npm install`
+3. Install the dependencies by running `npm install`
+4. Create a .env file in the `backend` directory of the project and add your MongoDB URL as MONGO_URL=<your-mongodb-url>
 5. Start the server by running `npm run dev` in the `backend` directory
 6. Start the frontend by running `npm start` in the `frontend` directory
 7. Navigate to http://localhost:3000 in your web browser to view the app
