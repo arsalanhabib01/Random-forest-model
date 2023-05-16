@@ -45,14 +45,21 @@ function App() {
 
     // Create the Excel workbook and worksheet
     const workbook = XLSXUtils.book_new();
+    
+    let iterator = 0;
     Object.keys(dataByDate).forEach((date) => {
       if (date === formattedDate) {
         const worksheet = XLSXUtils.json_to_sheet(dataByDate[date]);
         XLSXUtils.book_append_sheet(workbook, worksheet, date);
-      } else {
-        console.log('No predictions data available for the current date.');
-     }
+        iterator = 1;
+      }
   }); 
+
+  // When their is no prediction data is available for the current date
+  if (iterator === 0) {
+    alert('No predictions data available.');
+    return;
+  }
 
    // Save the workbook as an Excel file with the current date
    writeExcelFile(workbook, `predictions_${formattedDate}.xlsx`);
