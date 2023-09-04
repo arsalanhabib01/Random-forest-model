@@ -129,8 +129,8 @@ if dataset.isnull().any().any():
 
 # Perform data slicing for reference and current data
 
-data_ref = dataset[~dataset['Destination_Port'].isin([54865, 53])]
-data_cur = dataset[dataset['Destination_Port'].isin([54865, 53])]
+data_ref = dataset[~dataset['Destination_Port'].isin([54865, 53])].iloc[:5000,:]
+data_cur = dataset[dataset['Destination_Port'].isin([54865, 53])].iloc[:5000,:]
 
 
 WORKSPACE = "workspace"
@@ -161,7 +161,7 @@ def create_test_suite(i: int):
         timestamp=datetime.datetime.now() + datetime.timedelta(days=i),
     )
 
-    data_drift_test_suite.run(reference_data=data_ref, current_data=data_cur)#.iloc[100 * i : 100 * (i + 1), :])
+    data_drift_test_suite.run(reference_data=data_ref, current_data=data_cur.iloc[100 * i : 100 * (i + 1), :])
     return data_drift_test_suite
 
 def create_project(workspace: WorkspaceBase):
