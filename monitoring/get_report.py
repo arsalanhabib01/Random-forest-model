@@ -165,4 +165,4 @@ test_suite.run(reference_data=train_data, current_data=val_data, column_mapping=
 test_result=test_suite.as_dict()
 print(test_result)
 
-# Note: Command to run the file "python get_prediction.py"
+# Note: Command to run the file "python get_report.py"
