@@ -206,7 +206,7 @@ if __name__ == "__main__":
     # rm -r workspace
 
 # 2. Run the command to generate a new example project as defined in the script above.
-    # python get_monitoring.py
+    # python data_drift_report.py
 
 # 3. Run the Evidently UI service 
 # launch the user interface that will include the defined project.
