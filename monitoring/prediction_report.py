@@ -2,15 +2,26 @@
 import glob
 import numpy as np
 import pandas as pd
+import datetime
 
 from sklearn.ensemble import RandomForestClassifier
 
+from evidently.metrics import ColumnSummaryMetric
+from evidently.metrics import DatasetDriftMetric
+from evidently.metrics import DatasetMissingValuesMetric
+from evidently.report import Report
+from evidently.test_preset import DataDriftTestPreset
+from evidently.test_suite import TestSuite
+from evidently.ui.dashboards import CounterAgg
+from evidently.ui.dashboards import DashboardPanelCounter
+from evidently.ui.dashboards import PanelValue
+from evidently.ui.dashboards import ReportFilter
+from evidently.ui.workspace import Workspace
+from evidently.ui.workspace import WorkspaceBase
+
 from evidently import ColumnMapping
 from evidently.report import Report
-from evidently.metrics import ColumnDriftMetric, DatasetDriftMetric, DatasetMissingValuesMetric
-
-from evidently.test_suite import TestSuite
-from evidently.test_preset import DataDriftTestPreset
+from evidently.metrics import DatasetDriftMetric, DatasetMissingValuesMetric
 
 # path to where ML files are stored
 # where there are csv files for each day containing different intrusions.
@@ -150,19 +161,81 @@ column_mapping = ColumnMapping(
     target=None
 )
 
-report = Report(metrics = [
-    ColumnDriftMetric(column_name='prediction'),
-    DatasetDriftMetric(),
-    DatasetMissingValuesMetric()
-])
+WORKSPACE = "workspace"
 
-report.run(reference_data=train_data, current_data=val_data, column_mapping=column_mapping)
-result = report.as_dict()
-print(result)
+YOUR_PROJECT_NAME = "New Project"
+YOUR_PROJECT_DESCRIPTION = "Test project using dataset."
 
-test_suite = TestSuite(tests = [DataDriftTestPreset()])
-test_suite.run(reference_data=train_data, current_data=val_data, column_mapping=column_mapping)
-test_result=test_suite.as_dict()
-print(test_result)
+def create_report(i: int):
 
-# Note: Command to run the file "python prediction_report.py"
+    prediction_report = Report(
+        metrics=[
+            DatasetDriftMetric(),
+            DatasetMissingValuesMetric(),
+            ColumnSummaryMetric(column_name="prediction"),
+        ],
+        timestamp=datetime.datetime.now() + datetime.timedelta(days=i),
+    )
+    prediction_report.run(reference_data=train_data, current_data=val_data.iloc[100 * i : 100 * (i + 1), :], column_mapping=column_mapping)
+    return prediction_report
+
+
+def create_test_suite(i: int):
+    prediction_test_suite = TestSuite(
+        tests=[DataDriftTestPreset()],
+        timestamp=datetime.datetime.now() + datetime.timedelta(days=i),
+    )
+
+    prediction_test_suite.run(reference_data=train_data, current_data=val_data.iloc[100 * i : 100 * (i + 1), :], column_mapping=column_mapping)
+    return prediction_test_suite
+
+def create_project(workspace: WorkspaceBase):
+    project = workspace.create_project(YOUR_PROJECT_NAME)
+    project.description = YOUR_PROJECT_DESCRIPTION
+    
+    project.dashboard.add_panel(
+        DashboardPanelCounter(
+            title="Model Calls",
+            filter=ReportFilter(metadata_values={}, tag_values=[]),
+            value=PanelValue(
+                metric_id="DatasetMissingValuesMetric",
+                field_path=DatasetMissingValuesMetric.fields.current.number_of_rows,
+                legend="count",
+            ),
+            text="count",
+            agg=CounterAgg.SUM,
+            size=1,
+        )
+    )
+    project.save()
+    return project
+
+def create_demo_project(workspace: str):
+    ws = Workspace.create(workspace)
+    project = create_project(ws)
+
+    for i in range(0, 5):
+        report = create_report(i=i)
+        ws.add_report(project.id, report)
+
+        test_suite = create_test_suite(i=i)
+        ws.add_test_suite(project.id, test_suite)
+
+if __name__ == "__main__":
+    create_demo_project("workspace")
+
+# 1. (Optional) Delete workspace
+# If this is not the first run of the script, and you reuse the same project – 
+# run the command to delete a previously generated workspace:
+    # cd src/evidently/ui/
+    # rm -r workspace
+
+# 2. Run the command to generate a new example project as defined in the script above.
+    # python prediction_report.py
+
+# 3. Run the Evidently UI service 
+# launch the user interface that will include the defined project.
+    # 3.1. If you only want to include your project, run:
+        # evidently ui 
+    # 3.2. If you want to see both your new project and a standard demo project, run:
+        # evidently ui –-demo-project
